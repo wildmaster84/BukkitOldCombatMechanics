@@ -13,8 +13,8 @@ plugins {
 
 repositories {
     mavenCentral()
-    // Spigot API
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    // Folia API
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://oss.sonatype.org/content/repositories/central")
     // Placeholder API for reflection utils
@@ -29,8 +29,8 @@ repositories {
 
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.2")
-    compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
-    // Shaded in by Bukkit
+    compileOnly("dev.folia:folia-api:1.19.4-R0.1-SNAPSHOT")
+
     compileOnly("io.netty:netty-all:4.1.93.Final")
     compileOnly("me.clip:placeholderapi:2.11.3")
     // Spartan API
@@ -43,7 +43,7 @@ description = "OldCombatMechanics"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
