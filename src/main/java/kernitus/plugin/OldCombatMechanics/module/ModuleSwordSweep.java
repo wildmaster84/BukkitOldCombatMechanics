@@ -39,7 +39,6 @@ public class ModuleSwordSweep extends OCMModule {
     private final List<Location> sweepLocations = new ArrayList<>();
     private final ParticleListener particleListener;
     private EntityDamageEvent.DamageCause sweepDamageCause;
-    private BukkitRunnable task;
 
     public ModuleSwordSweep(OCMMain plugin) {
         super(plugin, "disable-sword-sweep");
@@ -69,14 +68,7 @@ public class ModuleSwordSweep extends OCMModule {
 
         if (task != null) task.cancel();
 
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                sweepLocations.clear();
-            }
-        };
-
-        task.runTaskTimer(plugin, 0, 1);
+        OCMMain.runTaskTimer(plugin, () -> sweepLocations.clear(), 0, 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
