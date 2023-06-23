@@ -80,16 +80,11 @@ public class ModuleOldArmourDurability extends OCMModule {
         final List<ItemStack> armour = Arrays.stream(player.getInventory().getArmorContents()).filter(Objects::nonNull).collect(Collectors.toList());
         explosionDamaged.put(uuid, armour);
 
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                explosionDamaged.remove(uuid);
-                debug("Removed from explosion set!", player);
-            }
-        };
-
         // This delay seems enough for the durability events to fire
-        runnable.runTaskLater(plugin, 1);
+        OCMMain.runTaskLater(plugin, () -> {
+        	explosionDamaged.remove(uuid);
+            debug("Removed from explosion set!", player);
+        }, 1);
         debug("Detected explosion!", player);
     }
 }
