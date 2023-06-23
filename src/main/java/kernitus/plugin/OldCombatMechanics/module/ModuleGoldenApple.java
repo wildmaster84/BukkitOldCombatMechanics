@@ -171,7 +171,7 @@ public class ModuleGoldenApple extends OCMModule {
         final Set<PotionEffectType> defaultEffects = ENCHANTED_GOLDEN_APPLE.isSame(originalItem) ?
                 nappleEffects : gappleEffects;
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        OCMMain.runTaskLater(plugin, () -> {
             // Remove all potion effects the apple added
             player.getActivePotionEffects().stream()
                     .map(PotionEffect::getType)
