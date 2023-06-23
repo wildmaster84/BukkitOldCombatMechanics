@@ -11,7 +11,7 @@
 
 <hr/>
 
-# Old Combat Mechanics
+# Old Combat Mechanics | Folia Support
 #### by kernitus and Rayzr522
 A performant Bukkit/Spigot plugin to revert combat-related mechanics to pre-1.9 and much more.
 
