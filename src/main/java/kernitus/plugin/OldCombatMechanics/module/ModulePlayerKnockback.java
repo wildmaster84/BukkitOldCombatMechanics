@@ -153,6 +153,6 @@ public class ModulePlayerKnockback extends OCMModule {
         playerKnockbackHashMap.put(victimId, playerVelocity);
 
         // Sometimes PlayerVelocityEvent doesn't fire, remove data to not affect later events if that happens
-        Bukkit.getScheduler().runTaskLater(plugin, () -> playerKnockbackHashMap.remove(victimId), 1);
+        OCMMain.runTaskLater(plugin, () -> playerKnockbackHashMap.remove(victimId), 1);
     }
 }
