@@ -81,7 +81,7 @@ public class ModulePlayerRegen extends OCMModule {
         // Calculate new exhaustion value, must be between 0 and 4. If above, it will reduce the saturation in the following tick.
         final float exhaustionToApply = (float) module().getDouble("exhaustion");
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        OCMMain.runTaskLater(plugin, () -> {
             // We do this in the next tick because bukkit doesn't stop the exhaustion change when cancelling the event
             p.setExhaustion(previousExhaustion + exhaustionToApply);
             debug("Exh before: " + previousExhaustion + " Now: " + p.getExhaustion() +
