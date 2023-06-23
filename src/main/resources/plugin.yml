@@ -11,6 +11,7 @@ website: https://github.com/kernitus/BukkitOldCombatMechanics
 load: POSTWORLD
 softdepend: [PlaceholderAPI, Spartan]
 api-version: 1.13
+folia-supported: true
 
 commands:
   OldCombatMechanics:
