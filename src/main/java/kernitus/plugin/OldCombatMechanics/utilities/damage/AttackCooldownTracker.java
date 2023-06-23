@@ -26,11 +26,12 @@ public class AttackCooldownTracker extends OCMModule {
         INSTANCE = this;
         lastCooldown = new WeakHashMap<>();
 
-        Runnable cooldownTask = () -> Bukkit.getOnlinePlayers().forEach(
-                player -> lastCooldown.put(player.getUniqueId(),
-                        VersionCompatUtils.getAttackCooldown(player)
-                ));
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, cooldownTask, 0, 1L);
+        OCMMain.runTaskTimer(plugin, () -> {
+        	Bukkit.getOnlinePlayers().forEach(
+        			player -> lastCooldown.put(player.getUniqueId(),
+                            VersionCompatUtils.getAttackCooldown(player)
+                    ));
+        }, 0, 1L);
     }
 
     @EventHandler
