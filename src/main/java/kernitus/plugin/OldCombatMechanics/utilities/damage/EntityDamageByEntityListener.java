@@ -180,7 +180,7 @@ public class EntityDamageByEntityListener extends OCMModule {
             event.setDamage(newDamage);
 
             // Set last damage to 0, so we can detect attacks even by weapons with a weaker attack value than what OCM would calculate
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            OCMMain.runTaskLater(plugin, () -> {
                 ((LivingEntity) damagee).setLastDamage(0);
                 debug("Set last damage to 0", damagee);
             }, 1L);
