@@ -177,24 +177,11 @@ public class ModuleSwordBlocking extends OCMModule {
         final UUID id = p.getUniqueId();
         tryCancelTask(id);
 
-        BukkitRunnable removeItem = new BukkitRunnable() {
-            @Override
-            public void run() {
+        OCMMain.runTaskLater(plugin, () -> restore(p), restoreDelay);
+        OCMMain.runTaskTimer(plugin, () -> {
+        	if (!isPlayerBlocking(p))
                 restore(p);
-            }
-        };
-        removeItem.runTaskLater(plugin, restoreDelay);
-
-        BukkitRunnable checkBlocking = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!isPlayerBlocking(p))
-                    restore(p);
-            }
-        };
-        checkBlocking.runTaskTimer(plugin, 10L, 2L);
-
-        correspondingTasks.put(p.getUniqueId(), new RunnableSeries(removeItem, checkBlocking));
+        }, 10L, 2L);
     }
 
     private boolean areItemsStored(UUID uuid) {
