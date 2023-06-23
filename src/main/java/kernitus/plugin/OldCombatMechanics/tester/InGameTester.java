@@ -297,7 +297,7 @@ public class InGameTester {
 
         }
 
-        Bukkit.getScheduler().runTaskLater(ocm, () -> {
+        OCMMain.runTaskLater(ocm, () -> {
             afterAll(testCount);
             EntityDamageByEntityEvent.getHandlerList().unregister(listener);
         }, attackDelay + 1);
