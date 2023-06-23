@@ -81,18 +81,15 @@ public class ModuleFishingRodVelocity extends OCMModule {
 
         if (!hasDifferentGravity) return;
         // Adjust gravity on every tick unless it's in water
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!fishHook.isValid() || fishHook.isOnGround()) cancel();
+        OCMMain.runTaskTimer(plugin, () -> {
+        	if (!fishHook.isValid() || fishHook.isOnGround()) return; //This can no longer call cancled() so maybe return will work?
 
-                // We check both conditions as sometimes it's underwater but in seagrass, or when bobbing not underwater but the material is water
-                if (!fishHook.isInWater() && fishHook.getWorld().getBlockAt(fishHook.getLocation()).getType() != Material.WATER) {
-                    final Vector fVelocity = fishHook.getVelocity();
-                    fVelocity.setY(fVelocity.getY() - 0.01);
-                    fishHook.setVelocity(fVelocity);
-                }
+            // We check both conditions as sometimes it's underwater but in seagrass, or when bobbing not underwater but the material is water
+            if (!fishHook.isInWater() && fishHook.getWorld().getBlockAt(fishHook.getLocation()).getType() != Material.WATER) {
+                final Vector fVelocity = fishHook.getVelocity();
+                fVelocity.setY(fVelocity.getY() - 0.01);
+                fishHook.setVelocity(fVelocity);
             }
-        }.runTaskTimer(plugin, 1, 1);
+        }, 1, 1);
     }
 }
