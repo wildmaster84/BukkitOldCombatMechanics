@@ -23,7 +23,6 @@ public class ModuleUpdateChecker extends OCMModule {
     public void onPlayerLogin(PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         if (player.hasPermission("OldCombatMechanics.notify"))
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin,
-                    () -> new UpdateChecker(plugin).performUpdate(), 20L);
+            OCMMain.runTaskLater(plugin, () -> new UpdateChecker(plugin).performUpdate(), 20L);
     }
 }
