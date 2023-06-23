@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 public class OCMMain extends JavaPlugin {
 
     private static OCMMain INSTANCE;
+    private static Object GLOBAL_REGION_SCHEDULER = null;
     private final Logger logger = getLogger();
     private final OCMConfigHandler CH = new OCMConfigHandler(this);
     private final List<Runnable> disableListeners = new ArrayList<>();
@@ -267,5 +268,44 @@ public class OCMMain extends JavaPlugin {
     @Override
     public File getFile() {
         return super.getFile();
+    }
+
+    //Folia Scheduler (Borrowed from ArmorStandEditor)
+    public static void runTaskLater(Plugin plugin, Runnable runnable, long delayedTicks) {
+    	Object globalRegionScheduler = getGlobalRegionScheduler();
+        callMethod(globalRegionScheduler, "runDelayed", new Class[]{Plugin.class, Consumer.class, long.class},plugin, (Consumer<?>) (task) -> runnable.run(), delayedTicks);
+    }
+    
+    public static void runTaskTimer(Plugin plugin, Runnable runnable, long initialDelayTicks, long periodTicks) {
+    	Object globalRegionScheduler = getGlobalRegionScheduler();
+        callMethod(globalRegionScheduler, "runAtFixedRate", new Class[]{Plugin.class, Consumer.class, long.class, long.class},plugin, (Consumer<?>) (task) -> runnable.run(), initialDelayTicks, periodTicks);
+    }
+    
+    public static Object getGlobalRegionScheduler() {
+        if (GLOBAL_REGION_SCHEDULER == null) {
+            GLOBAL_REGION_SCHEDULER = callMethod(Bukkit.class, "getGlobalRegionScheduler");
+        }
+        return GLOBAL_REGION_SCHEDULER;
+    }
+    
+    public static <T> T callMethod(Class<?> clazz, Object object, String methodName, Class<?>[] parameterTypes, Object... args) {
+        try {
+            return (T) clazz.getDeclaredMethod(methodName, parameterTypes).invoke(object, args);
+        } catch (Throwable t) {
+            throw new IllegalStateException(t);
+        }
+    }
+
+    public static <T> T callMethod(Object object, String methodName, Class<?>[] parameterTypes, Object... args) {
+        return callMethod(object.getClass(), object, methodName, parameterTypes, args);
+    }
+
+    public static <T> T callMethod(Class<?> clazz, String methodName) {
+        return callMethod(clazz, null, methodName, new Class[]{});
+    }
+    
+    public static void runTask(Plugin plugin, Runnable runnable) {
+    	Object globalRegionScheduler = getGlobalRegionScheduler();
+        callMethod(globalRegionScheduler, "run", new Class[]{Plugin.class, Consumer.class}, plugin, (Consumer<?>) (task) -> runnable.run());
     }
 }
