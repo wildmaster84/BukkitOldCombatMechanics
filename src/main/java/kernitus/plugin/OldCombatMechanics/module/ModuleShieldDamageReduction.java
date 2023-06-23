@@ -86,13 +86,10 @@ public class ModuleShieldDamageReduction extends OCMModule {
         if (currentDamage <= 0) { // Make sure armour is not damaged if fully blocked
             final List<ItemStack> armour = Arrays.stream(player.getInventory().getArmorContents()).filter(Objects::nonNull).collect(Collectors.toList());
             fullyBlocked.put(uuid, armour);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    fullyBlocked.remove(uuid);
-                    debug("Removed from fully blocked set!", player);
-                }
-            }.runTaskLater(plugin, 1);
+            OCMMain.runTaskLater(plugin, () -> {
+            	fullyBlocked.remove(uuid);
+                debug("Removed from fully blocked set!", player);
+            }, 1);
         }
     }
 
