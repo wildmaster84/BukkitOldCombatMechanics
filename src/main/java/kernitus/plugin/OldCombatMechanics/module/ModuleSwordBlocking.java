@@ -7,7 +7,6 @@ package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
 import kernitus.plugin.OldCombatMechanics.utilities.ConfigUtils;
-import kernitus.plugin.OldCombatMechanics.utilities.RunnableSeries;
 import kernitus.plugin.OldCombatMechanics.utilities.reflection.Reflector;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -31,7 +30,6 @@ public class ModuleSwordBlocking extends OCMModule {
     private static final ItemStack SHIELD = new ItemStack(Material.SHIELD);
     // Not using WeakHashMaps here for reliability
     private final Map<UUID, ItemStack> storedOffhandItems = new HashMap<>();
-    private final Map<UUID, RunnableSeries> correspondingTasks = new HashMap<>();
     private int restoreDelay;
     private boolean blacklist;
     private List<Material> noBlockingItems = new ArrayList<>();
@@ -153,10 +151,6 @@ public class ModuleSwordBlocking extends OCMModule {
     }
 
     private void restore(Player p) {
-        final UUID id = p.getUniqueId();
-
-        tryCancelTask(id);
-
         // If they are still blocking with the shield postpone restoring
         if (!areItemsStored(id)) return;
 
@@ -168,15 +162,8 @@ public class ModuleSwordBlocking extends OCMModule {
         }
     }
 
-    private void tryCancelTask(UUID id) {
-        Optional.ofNullable(correspondingTasks.remove(id))
-                .ifPresent(RunnableSeries::cancelAll);
-    }
-
     private void scheduleRestore(Player p) {
-        final UUID id = p.getUniqueId();
-        tryCancelTask(id);
-
+        
         OCMMain.runTaskLater(plugin, () -> restore(p), restoreDelay);
         // This is bugging out and i don't think we need this anymore
         //OCMMain.runTaskTimer(plugin, () -> {
