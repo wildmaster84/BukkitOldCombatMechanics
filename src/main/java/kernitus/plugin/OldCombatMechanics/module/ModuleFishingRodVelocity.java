@@ -81,9 +81,8 @@ public class ModuleFishingRodVelocity extends OCMModule {
 
         if (!hasDifferentGravity) return;
         // Adjust gravity on every tick unless it's in water
+        if (!fishHook.isValid() || fishHook.isOnGround()) return; //This can no longer call cancled() so we return before the schedule is made
         OCMMain.runTaskTimer(plugin, () -> {
-        	if (!fishHook.isValid() || fishHook.isOnGround()) return; //This can no longer call cancled() so maybe return will work?
-
             // We check both conditions as sometimes it's underwater but in seagrass, or when bobbing not underwater but the material is water
             if (!fishHook.isInWater() && fishHook.getWorld().getBlockAt(fishHook.getLocation()).getType() != Material.WATER) {
                 final Vector fVelocity = fishHook.getVelocity();
