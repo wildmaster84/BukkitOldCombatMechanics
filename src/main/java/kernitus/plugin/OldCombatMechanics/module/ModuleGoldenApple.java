@@ -171,17 +171,16 @@ public class ModuleGoldenApple extends OCMModule {
         final Set<PotionEffectType> defaultEffects = ENCHANTED_GOLDEN_APPLE.isSame(originalItem) ?
                 nappleEffects : gappleEffects;
 
-        OCMMain.runTaskLater(plugin, () -> {
-            // Remove all potion effects the apple added
-            player.getActivePotionEffects().stream()
-                    .map(PotionEffect::getType)
-                    .filter(defaultEffects::contains)
-                    .forEach(player::removePotionEffect);
-            // Add previous potion effects from before eating the apple
-            player.addPotionEffects(previousPotionEffects);
-            // Add new custom effects from eating the apple
-            applyEffects(player, newEffects);
-        }, 1L);
+        Bukkit.getRegionScheduler().execute(plugin, player.getLocation(), () -> {
+        	player.getActivePotionEffects().stream()
+		            .map(PotionEffect::getType)
+		            .filter(defaultEffects::contains)
+		            .forEach(player::removePotionEffect);
+		    // Add previous potion effects from before eating the apple
+		    player.addPotionEffects(previousPotionEffects);
+		    // Add new custom effects from eating the apple
+		    applyEffects(player, newEffects);
+        });
     }
 
     private void applyEffects(LivingEntity target, List<PotionEffect> effects) {
