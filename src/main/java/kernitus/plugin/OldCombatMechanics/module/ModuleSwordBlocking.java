@@ -178,10 +178,11 @@ public class ModuleSwordBlocking extends OCMModule {
         tryCancelTask(id);
 
         OCMMain.runTaskLater(plugin, () -> restore(p), restoreDelay);
-        OCMMain.runTaskTimer(plugin, () -> {
-        	if (!isPlayerBlocking(p))
-                restore(p);
-        }, 10L, 2L);
+        // This is bugging out and i don't think we need this anymore
+        //OCMMain.runTaskTimer(plugin, () -> {
+        //	if (!isPlayerBlocking(p))
+        //        restore(p);
+        //}, 10L, 2L);
     }
 
     private boolean areItemsStored(UUID uuid) {
